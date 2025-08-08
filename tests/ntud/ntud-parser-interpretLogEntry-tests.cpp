@@ -72,12 +72,54 @@ BOOST_AUTO_TEST_CASE( AZI )
     BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
 }
 
+BOOST_AUTO_TEST_CASE( AHMAD )
+{
+    const LogEntry theLogEntry = { "AHMAD", {"23.62", "78o36'45''","N","23o42'56''","W"} };
+    const degrees expectedLatitude = 78.6125;
+    const degrees expectedLongitude = -23.715556;
+    const degrees expectedAltitude = 23.62;
+
+    Waypoint actualWaypoint = interpretLogEntry(theLogEntry);
+
+    BOOST_CHECK_CLOSE( actualWaypoint.latitude() , expectedLatitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.longitude() , expectedLongitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
+}
+
 BOOST_AUTO_TEST_CASE( ROB )
 {
     const LogEntry theLogEntry = { "ROB", {"78o30.00'","N","23o06.00'","E","2001-05-15T02:08:32Z","256"} };
     const degrees expectedLatitude = 78.5;
     const degrees expectedLongitude = 23.1;
     const degrees expectedAltitude = 256;
+
+    Waypoint actualWaypoint = interpretLogEntry(theLogEntry);
+
+    BOOST_CHECK_CLOSE( actualWaypoint.latitude() , expectedLatitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.longitude() , expectedLongitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
+}
+
+BOOST_AUTO_TEST_CASE( JO )
+{
+    const LogEntry theLogEntry = { "JO", {"2001-05-15T02:08:32Z","78o30.00'","N","23o06.00'","E","256","extra"} };
+    const degrees expectedLatitude = 78.5;
+    const degrees expectedLongitude = 23.1;
+    const degrees expectedAltitude = 256;
+
+    Waypoint actualWaypoint = interpretLogEntry(theLogEntry);
+
+    BOOST_CHECK_CLOSE( actualWaypoint.latitude() , expectedLatitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.longitude() , expectedLongitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
+}
+
+BOOST_AUTO_TEST_CASE( VISHAL )
+{
+    const LogEntry theLogEntry = { "VISHAL", {"23.62","23o30.00'","W","78o06.00'","N"} };
+    const degrees expectedLatitude = 78.1;
+    const degrees expectedLongitude = -23.5;
+    const degrees expectedAltitude = 23.62;
 
     Waypoint actualWaypoint = interpretLogEntry(theLogEntry);
 
