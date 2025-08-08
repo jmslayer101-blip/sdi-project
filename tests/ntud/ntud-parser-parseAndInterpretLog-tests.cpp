@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE( IllFormedLogEntries )
     BOOST_CHECK_EQUAL( actualWaypoints.size() , theExpectedSize );
 }
 
-BOOST_AUTO_TEST_CASE( ValidChecksumsAreNotRequired )
+BOOST_AUTO_TEST_CASE( ValidChecksumsAreRequired )
 {
     const std::string invalidChecksumLogEntryA = "@DAVID<2000-01-11T01:10:05Z,56.89,-17.5,+51.4>028;"; // should be 13
     const std::string invalidChecksumLogEntryB = "@ISMAHANE<78o36'45'',N,23o42'56'',W,23.62>052;"; // should be 61
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE( ValidChecksumsAreNotRequired )
     theLog << validLogEntryA << std::endl
            << invalidChecksumLogEntryA << std::endl
            << validLogEntryB << std::endl << invalidChecksumLogEntryB << std::endl;
-    const unsigned int theExpectedSize = 4;
+    const unsigned int theExpectedSize = 2;
 
     std::vector<Waypoint> actualWaypoints = parseAndInterpretLog(theLog);
 
