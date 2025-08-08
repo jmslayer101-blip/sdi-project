@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE( ParseAndInterpretLogTests )
 const double percentageAccuracy = 0.0001;
 
 const std::string validLogEntryA = "@DAVID<2000-01-11T01:10:05Z,56.89,-17.5,+51.4>0D;";
-const std::string validLogEntryB = "@ISMAHANE<78o36'45'',N,23o42'56'',W,23.62>3d;";
+const std::string validLogEntryB = "@ISMAHANE<78d36m45s,N,23d42m56s,W,23.62>3d;";
 
 const GPS::Waypoint waypointA = GPS::Waypoint(-17.5,51.4,56.89);
 const GPS::Waypoint waypointB = GPS::Waypoint(78.6125,-23.715556,23.62);
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE( IllFormedLogEntries )
 BOOST_AUTO_TEST_CASE( ValidChecksumsAreRequired )
 {
     const std::string invalidChecksumLogEntryA = "@DAVID<2000-01-11T01:10:05Z,56.89,-17.5,+51.4>1B;"; // should be 0D
-    const std::string invalidChecksumLogEntryB = "@ISMAHANE<78o36'45'',N,23o42'56'',W,23.62>34;"; // should be 3d
+    const std::string invalidChecksumLogEntryB = "@ISMAHANE<78d36m45s,N,23d42m56s,W,23.62>34;"; // should be 3d
     std::stringstream theLog;
     std::stringstream theOutputMessages;
     theLog << validLogEntryA << std::endl
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE( UnrecognisedFormatCode )
 
 BOOST_AUTO_TEST_CASE( MissingFields )
 {
-    const std::string logEntryWithMissingFields = "@ISMAHANE<78o36'45'',23o42'56'',23.62>24;";
+    const std::string logEntryWithMissingFields = "@ISMAHANE<78d36m45s,23d42m56s,23.62>24;";
 
     std::stringstream theLog;
     std::stringstream theOutputMessages;
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE( MissingFields )
 
 BOOST_AUTO_TEST_CASE( InvalidField )
 {
-    const std::string logEntryWithInvalidField = "@ISMAHANE<7836'45'',N,23o42'56'',W,23.62>52;"; // missing o
+    const std::string logEntryWithInvalidField = "@ISMAHANE<7836m45s,N,23d42m56s,W,23.62>59;"; // missing d
 
     std::stringstream theLog;
     std::stringstream theOutputMessages;
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE( MessageForSkippedEntriesWithInvalidStructure )
 BOOST_AUTO_TEST_CASE( MessagesForSkippedEntriesWithInvalidChecksum )
 {
     std::string invalidChecksumLogEntryA = "@DAVID<2000-01-11T01:10:05Z,56.89,-17.5,+51.4>1B;"; // should be 0D
-    std::string invalidChecksumLogEntryB = "@ISMAHANE<78o36'45'',N,23o42'56'',W,23.62>34;"; // should be 3d
+    std::string invalidChecksumLogEntryB = "@ISMAHANE<78d36m45s,N,23d42m56s,W,23.62>34;"; // should be 3d
 
     std::stringstream theLog;
     std::stringstream theOutputMessages;
@@ -236,7 +236,7 @@ BOOST_AUTO_TEST_CASE( MessageForSkippedEntrywithIncorrectNumberOfFields )
 
 BOOST_AUTO_TEST_CASE( MessageForSkippedEntryWithInvalidData )
 {
-    std::string invalidLogEntry = "@ISMAHANE<7836'45'',N,23o42'56'',W,23.62>52;"; // missing o in degrees
+    std::string invalidLogEntry = "@ISMAHANE<7836m45s,N,23d42m56s,W,23.62>59;"; // missing d in degrees
 
     std::stringstream theLog;
     std::stringstream theOutputMessages;
