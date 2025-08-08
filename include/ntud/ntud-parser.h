@@ -40,6 +40,12 @@ namespace GPS::NTUD
   // Throws std::domain_error if the data fields contain invalid content.
   GPS::Waypoint interpretLogEntry(NTUD::LogEntry);
 
+
+
+  // Parses and interprets the GPS location data from a sequence of raw text NTUD log entries.
+  // Any log entry that has an invalid structure is skipped.
+  // Log entries with invalid content in the data fields are also skipped.
+  std::vector<GPS::Waypoint> parseAndInterpretLog(std::istream&);
 }
 
 #endif
