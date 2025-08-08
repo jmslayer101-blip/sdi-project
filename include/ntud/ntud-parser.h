@@ -31,12 +31,12 @@ namespace GPS::NTUD
 
   // Checks whether the log entry contains the correct number of fields for the entry type of the format code.
   // Throws std::domain_error if the log entry has an unrecognised format code.
-  bool hasSufficientFields(NTUD::LogEntry);
+  bool hasCorrectNumberOfFields(NTUD::LogEntry);
 
 
 
   // Interprets the GPS location data in the log entry and constructs a Waypoint object.
-  // Pre-condition: the log entry has a sufficient amount of fields.
+  // Pre-condition: the log entry has the correct amount of fields.
   // Throws std::domain_error if the data fields contain invalid content.
   GPS::Waypoint interpretLogEntry(NTUD::LogEntry);
 
