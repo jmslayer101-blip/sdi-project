@@ -17,6 +17,16 @@ BOOST_AUTO_TEST_CASE( TypicalWellFormedLogEntries )
     BOOST_CHECK( hasValidStructure("#ANDY[2000-01-11T01:10:05Z,56.89,-17.5o38'46'',N,+51.4o13',W]052;") );
 }
 
+BOOST_AUTO_TEST_CASE( LowerCaseFormatCodeShouldBeRejected )
+{
+    BOOST_CHECK( ! hasValidStructure("#pete[56.89,-17.5,+51.4]123;") );
+}
+
+BOOST_AUTO_TEST_CASE( IncorrectStartSymbol )
+{
+    BOOST_CHECK( ! hasValidStructure("!NUNO[12,17,587]001;") );
+}
+
 BOOST_AUTO_TEST_CASE( MissingStartSymbol )
 {
     BOOST_CHECK( ! hasValidStructure("NUNO[12,17,587]001;") );
