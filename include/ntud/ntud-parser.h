@@ -16,6 +16,13 @@ namespace GPS::NTUD
 
 
 
+  // Computes the checksum of the raw text between the checksum delimiters.
+  // The checksum computation is the XOR reduction of the ASCII character codes of that text.
+  // Pre-condition: the argument string conforms to the structure of an NTUD log entry.
+  unsigned int actualChecksum(std::string);
+
+
+
   // Parses the raw text of a NTUD log entry and stores the data contents in a structured form in an NTUD::LogEntry.
   // Pre-condition: the argument string conforms to the structure of an NTUD log entry.
   NTUD::LogEntry parseLogEntry(std::string);
