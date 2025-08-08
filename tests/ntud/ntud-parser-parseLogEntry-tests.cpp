@@ -20,7 +20,7 @@ void checkLogEntriesEqual(const NTUD::LogEntry & actual, const NTUD::LogEntry & 
 
 BOOST_AUTO_TEST_CASE( TypicalLogEntry )
 {
-    const std::string logEntryRawText = "#NUNO[+45.67,-23.24,231.56,40mph]123;";
+    const std::string logEntryRawText = "@NUNO[+45.67,-23.24,231.56,40mph]123;";
     const LogEntry expectedLogEntry = { "NUNO", {"+45.67","-23.24","231.56","40mph"} };
 
     LogEntry actualLogEntry = parseLogEntry(logEntryRawText);
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( TypicalLogEntry )
 
 BOOST_AUTO_TEST_CASE( EmptyLogEntry )
 {
-    const std::string logEntryRawText = "#XXXX[]123;";
+    const std::string logEntryRawText = "@XXXX[]123;";
     const LogEntry expectedLogEntry = { "XXXX", { "" } };
 
     LogEntry actualLogEntry = parseLogEntry(logEntryRawText);
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE( EmptyLogEntry )
 
 BOOST_AUTO_TEST_CASE( SomeEmptyFields )
 {
-    const std::string logEntryRawText = "#XXXX[abc,,20,]078;";
+    const std::string logEntryRawText = "@XXXX[abc,,20,]078;";
     const LogEntry expectedLogEntry = { "XXXX", { "abc", "", "20", "" } };
 
     LogEntry actualLogEntry = parseLogEntry(logEntryRawText);
