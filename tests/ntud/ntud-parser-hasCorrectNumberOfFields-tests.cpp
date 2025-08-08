@@ -31,6 +31,13 @@ BOOST_AUTO_TEST_CASE( SufficientFieldsAZI )
     BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
 }
 
+BOOST_AUTO_TEST_CASE( SufficientFieldsROB )
+{
+    const LogEntry theLogEntry = { "ROB", {"78o36.45","N","23o42.56","E","2001-05-15T02:08:32Z","256"} };
+
+    BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
+}
+
 BOOST_AUTO_TEST_CASE( MissingFields )
 {
     const LogEntry theLogEntry = { "DAVID", {"2000-01-11T01:10:05Z","56.89","+51.4"} };
