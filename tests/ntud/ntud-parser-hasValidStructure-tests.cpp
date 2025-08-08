@@ -100,6 +100,11 @@ BOOST_AUTO_TEST_CASE( IllformedFormatCode )
     BOOST_CHECK( ! hasValidStructure("@A*C,<77>100;") );
 }
 
+BOOST_AUTO_TEST_CASE( FormatCodeTooShort )
+{
+    BOOST_CHECK( ! hasValidStructure("@X<77>100;") );
+}
+
 BOOST_AUTO_TEST_CASE( InvalidReservedCharInField )
 {
     BOOST_CHECK( ! hasValidStructure("@XXXX<23,<,A>100;") );
