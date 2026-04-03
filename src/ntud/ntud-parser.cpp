@@ -15,9 +15,9 @@ namespace NTUD
   {
       char c;
       unsigned int i;
-      if (s.empty()) return false; // Need this or next line could crash
-      if (s.size() < 5) return false; // Need this or next line could crash
-      // cout << "Debug A" << endl;
+      if (s.empty()) return false;
+      if (s.size() < 5) return false;
+
       c = s[1];
       if (((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z'))) return false;
       c = s[2];
@@ -26,50 +26,32 @@ namespace NTUD
       if (((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z'))) return false;
       c = s[4];
       if (((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z'))) return false;
-      if (s.size() < 6) return false; // Need this or next line could crash.
+      if (s.size() < 6) return false;
       if (s[5] != '[') return false;
-      // cout << "Debug C" << endl;
-      /*
-      i = 6;
-      while (true)
-      {
-          if (i == s.size()) return false;
-          if (s[i] == '#') return false; // Not allowed here.
-          if (s[i] == ';') return false; // Not allowed here.
-          if (s[i] == '[') return false; // Not allowed here.
-          if (s[i] == ']') break;
-          ++i;
-      }
-      */
-      // Nadia: for-loop is better.
+
       for (i = 6; true; ++i)
       {
           if (i == s.size()) return false;
-          if (s[i] == '#') return false; // Not allowed here.
-          if (s[i] == ';') return false; // Not allowed here.
-          if (s[i] == '[') return false; // Not allowed here.
+          if (s[i] == '#') return false;
+          if (s[i] == ';') return false;
+          if (s[i] == '[') return false;
           if (s[i] == ']') break;
       }
-      // cout << "Debug D" << endl;
-      if (s.size() < i+4) return false; // Note: i+4 NOT i+3.  This is confusing.
+
+      if (s.size() < i+4) return false;
       c = s[i+1];
       if ((c < '0') || (c > '9')) return false;
       c = s[i+2];
       if ((c < '0') || (c > '9')) return false;
       c = s[i+3];
       if ((c < '0') || (c > '9')) return false;
-      // cout << "Debug E" << endl;
-      // cout << s.size() << endl;
-      // cout << i << endl;
+
       if (s[i+4] != ';') return false;
-      if (s.size() != i+5) return false; // Note: i+5 NOT i+4.  This is confusing.
-      // Alice: It's because indexing starts at 0, so the index number is one less.
-      // Nadia: No, it's because we're using '<' rather than '<='.  We need a char at i+4, so we say < i+5.
-      // Ken: But indexing normally starts at 0, and we normally use <. So why is this different?
+      if (s.size() != i+5) return false;
+
       return true;
   }
 
-  // Stub definition, to be implemented.
   NTUD::LogEntry parseLogEntry(std::string s)
   {
       NTUD::LogEntry le;
@@ -79,7 +61,7 @@ namespace NTUD
   bool hasSufficientFields(LogEntry le)
   {
       string s = le.format;
-      unsigned int n = le.fields.size()
+      unsigned int n = le.fields.size();
 
       if (s.size() != 4)
       {
@@ -87,7 +69,8 @@ namespace NTUD
       }
 
       // Convert to upper case.
-      for (unsigned int i = 0; i < 4)
+      // *** A2 FIX: removed stray semicolon and added ++i ***
+      for (unsigned int i = 0; i < 4; ++i)
       {
           if (s[i] >= 'a' && s[i] <= 'z')
           {
@@ -109,7 +92,8 @@ namespace NTUD
       }
       else
       {
-          returnfalse;
+          // *** A2 FIX: corrected invalid token 'returnfalse' ***
+          return false;
       }
   }
 
@@ -341,7 +325,6 @@ namespace NTUD
           }
       }
   }
-
 
 }
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 
 project(GPS2026 LANGUAGES CXX)
 
@@ -26,12 +26,14 @@ add_executable(ntud-parser-tests
     tests/ntud/ntud-parser-hasValidStructure-tests.cpp
     tests/ntud/ntud-parser-interpretLogEntry-tests.cpp
     tests/ntud/ntud-parser-parseLogEntry-tests.cpp
-  )
+)
 
 target_include_directories(ntud-parser-tests PRIVATE
-                             ${CMAKE_SOURCE_DIR}/include
-                             ${CMAKE_SOURCE_DIR}/include/ntud/
-                          )
+${CMAKE_SOURCE_DIR}/include
+${CMAKE_SOURCE_DIR}/include/ntud/
+"C:/local/boost_1_90_0"
+)
 
-find_package(Boost REQUIRED COMPONENTS unit_test_framework)
-target_link_libraries(ntud-parser-tests PRIVATE Boost::unit_test_framework)
+target_link_libraries(ntud-parser-tests PRIVATE
+"C:/local/boost_1_90_0/lib64-msvc-14.3/libboost_unit_test_framework-vc143-mt-x64-1_90.lib"
+)
