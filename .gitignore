@@ -1,4 +1,24 @@
-bin/*
-build/*
-CMakeLists.txt.user
+# Visual Studio
 .vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# CMake build folders
+out/
+build/
+CMakeFiles/
+CMakeCache.txt
+
+# Binaries
+bin/
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.lib
+*.dll
+
+# Boost build junk
+boost/bin.v2/
