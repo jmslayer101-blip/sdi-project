@@ -30,11 +30,13 @@ namespace NTUD
   const string formatDAVE = "DAVID";
   const string formatISMA = "ISMAHANE";
   const string formatAZI = "AZI";
+  const string formatROB = "ROB";
 
   // Field count requirements for each format.
   const unsigned int daveMinFields = 4;
   const unsigned int ismaMinFields = 5;
   const unsigned int aziMinFields = 6;
+  const unsigned int robMinFields = 6;
 
   // Named constants for DMS (Degrees-Minutes-Seconds) symbols.
   const char degreesSymbol = 'o';
@@ -64,6 +66,13 @@ namespace NTUD
   const unsigned int aziLatBearingIndex = 3;
   const unsigned int aziLonIndex = 4;
   const unsigned int aziLonBearingIndex = 5;
+
+  // Field index constants for ROB format: lat(DDM), latBearing, lon(DDM), lonBearing, timestamp, alt.
+  const unsigned int robLatIndex = 0;
+  const unsigned int robLatBearingIndex = 1;
+  const unsigned int robLonIndex = 2;
+  const unsigned int robLonBearingIndex = 3;
+  const unsigned int robAltIndex = 5;
 
   string toUpperCase(string s)
   {
@@ -131,6 +140,36 @@ namespace NTUD
       if (result < 0)
       {
           throw invalid_argument("values in DMS format must be positive.  Positive/negative direction is denoted by a separate bearing indicator.");
+      }
+
+      return result;
+  }
+
+  // Parse a DDM (Degrees Decimal Minutes) string like "78o30.00'" into decimal degrees.
+  degrees parseDDM(const string& ddmText)
+  {
+      size_t degEnd = ddmText.find(degreesSymbol);
+      if (degEnd == string::npos)
+      {
+          throw domain_error("missing degrees symbol in DDM data field: " + ddmText);
+      }
+
+      size_t minEnd = ddmText.find(minutesSymbol, degEnd + 1);
+      if (minEnd == string::npos)
+      {
+          throw domain_error("missing minutes symbol in DDM data field: " + ddmText);
+      }
+
+      string degText = ddmText.substr(0, degEnd);
+      string minText = ddmText.substr(degEnd + 1, minEnd - degEnd - 1);
+
+      int degs = stoi(degText);
+      double mins = stod(minText);
+      degrees result = degs + mins / 60.0;
+
+      if (result < 0)
+      {
+          throw invalid_argument("values in DDM format must be positive.");
       }
 
       return result;
@@ -221,6 +260,33 @@ namespace NTUD
       catch (const invalid_argument& e)
       {
           throw domain_error(string("Ill-formed AZI data field: ") + e.what());
+      }
+  }
+
+  Waypoint interpretROB(const vector<string>& fields)
+  {
+      double lat, lon, alt;
+      try
+      {
+          lat = parseDDM(fields[robLatIndex]);
+          lon = parseDDM(fields[robLonIndex]);
+          alt = stod(fields[robAltIndex]);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed ROB data field: ") + e.what());
+      }
+
+      lat = applyBearing(lat, fields[robLatBearingIndex], northBearing, southBearing, formatROB);
+      lon = applyBearing(lon, fields[robLonBearingIndex], eastBearing, westBearing, formatROB);
+
+      try
+      {
+          return Waypoint(lat, lon, alt);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed ROB data field: ") + e.what());
       }
   }
 
@@ -318,6 +384,7 @@ namespace NTUD
       if (format == formatDAVE) return n == daveMinFields;
       if (format == formatISMA) return n == ismaMinFields;
       if (format == formatAZI) return n == aziMinFields;
+      if (format == formatROB) return n == robMinFields;
 
       throw std::domain_error("Unrecognised NTUD format code: " + format);
   }
@@ -326,7 +393,8 @@ namespace NTUD
   {
       if (le.format == formatDAVE) return interpretDAVE(le.fields);
       if (le.format == formatISMA) return interpretISMA(le.fields);
-      return interpretAZI(le.fields);
+      if (le.format == formatAZI) return interpretAZI(le.fields);
+      return interpretROB(le.fields);
   }
 
   vector<Waypoint> parseAndInterpretLog(istream& logStream, ostream& messageStream)

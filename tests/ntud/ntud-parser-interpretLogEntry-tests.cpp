@@ -72,6 +72,20 @@ BOOST_AUTO_TEST_CASE( AZI )
     BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
 }
 
+BOOST_AUTO_TEST_CASE( ROB )
+{
+    const LogEntry theLogEntry = { "ROB", {"78o30.00'","N","23o06.00'","E","2001-05-15T02:08:32Z","256"} };
+    const degrees expectedLatitude = 78.5;
+    const degrees expectedLongitude = 23.1;
+    const degrees expectedAltitude = 256;
+
+    Waypoint actualWaypoint = interpretLogEntry(theLogEntry);
+
+    BOOST_CHECK_CLOSE( actualWaypoint.latitude() , expectedLatitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.longitude() , expectedLongitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
+}
+
 BOOST_AUTO_TEST_CASE( NegativeAltitude )
 {
     const LogEntry theLogEntry = { "DAVID", {"2000-01-11T01:10:05Z","-456.8","+45.67","-23.24"} };
