@@ -330,6 +330,7 @@ namespace NTUD
       while (getline(logStream, line))
       {
           if (!hasValidStructure(line)) continue;
+          if (actualChecksum(line) != expectedChecksum(line)) continue;
 
           LogEntry le = parseLogEntry(line);
 
