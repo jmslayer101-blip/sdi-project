@@ -22,6 +22,7 @@ add_executable(ntud-parser-tests
     tests/ntud/ntud-parser-hasCorrectNumberOfFields-tests.cpp
     tests/ntud/ntud-parser-hasValidStructure-tests.cpp
     tests/ntud/ntud-parser-interpretLogEntry-tests.cpp
+    tests/ntud/ntud-parser-parseAndInterpretLog-tests.cpp
     tests/ntud/ntud-parser-parseLogEntry-tests.cpp
 )
 

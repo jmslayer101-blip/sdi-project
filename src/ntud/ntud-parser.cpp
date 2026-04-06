@@ -323,6 +323,37 @@ namespace NTUD
       return interpretAZI(le.fields);
   }
 
+  vector<Waypoint> parseAndInterpretLog(istream& logStream)
+  {
+      vector<Waypoint> waypoints;
+      string line;
+      while (getline(logStream, line))
+      {
+          if (!hasValidStructure(line)) continue;
+
+          LogEntry le = parseLogEntry(line);
+
+          try
+          {
+              if (!hasCorrectNumberOfFields(le)) continue;
+          }
+          catch (const domain_error&)
+          {
+              continue;
+          }
+
+          try
+          {
+              waypoints.push_back(interpretLogEntry(le));
+          }
+          catch (const domain_error&)
+          {
+              continue;
+          }
+      }
+      return waypoints;
+  }
+
 }
 
 }
