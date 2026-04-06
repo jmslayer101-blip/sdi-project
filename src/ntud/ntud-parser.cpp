@@ -16,8 +16,8 @@ namespace NTUD
   // Named constants for NTUD log entry structure.
   const char startSymbol = '@';
   const char endSymbol = ';';
-  const char fieldOpenBracket = '[';
-  const char fieldCloseBracket = ']';
+  const char fieldOpenBracket = '<';
+  const char fieldCloseBracket = '>';
   const char fieldSeparator = ',';
   const unsigned int formatCodeLength = 4;
   const unsigned int checksumLength = 3;
