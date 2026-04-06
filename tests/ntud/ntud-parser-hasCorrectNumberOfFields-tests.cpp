@@ -24,6 +24,13 @@ BOOST_AUTO_TEST_CASE( SufficientFieldsISMA )
     BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
 }
 
+BOOST_AUTO_TEST_CASE( SufficientFieldsAZI )
+{
+    const LogEntry theLogEntry = { "AZI", {"2001-05-15T02:08:32Z","256","78o36'45''","S","23o42'56''","E"} };
+
+    BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
+}
+
 BOOST_AUTO_TEST_CASE( MissingFields )
 {
     const LogEntry theLogEntry = { "DAVID", {"2000-01-11T01:10:05Z","56.89","+51.4"} };

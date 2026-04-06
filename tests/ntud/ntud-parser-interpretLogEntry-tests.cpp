@@ -58,6 +58,20 @@ BOOST_AUTO_TEST_CASE( ISMA_SE )
     BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
 }
 
+BOOST_AUTO_TEST_CASE( AZI )
+{
+    const LogEntry theLogEntry = { "AZI", {"2000-01-11T01:10:05Z","467.21","22o47'03''","S","38o14'43''","E"} };
+    const degrees expectedLatitude = -22.784167;
+    const degrees expectedLongitude = 38.245278;
+    const degrees expectedAltitude = 467.21;
+
+    Waypoint actualWaypoint = interpretLogEntry(theLogEntry);
+
+    BOOST_CHECK_CLOSE( actualWaypoint.latitude() , expectedLatitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.longitude() , expectedLongitude , percentageAccuracy );
+    BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
+}
+
 BOOST_AUTO_TEST_CASE( NegativeAltitude )
 {
     const LogEntry theLogEntry = { "DAVID", {"2000-01-11T01:10:05Z","-456.8","+45.67","-23.24"} };

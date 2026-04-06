@@ -28,10 +28,12 @@ namespace NTUD
   // Named constants for NTUD format codes.
   const string formatDAVE = "DAVID";
   const string formatISMA = "ISMAHANE";
+  const string formatAZI = "AZI";
 
   // Field count requirements for each format.
   const unsigned int daveMinFields = 4;
   const unsigned int ismaMinFields = 5;
+  const unsigned int aziMinFields = 6;
 
   // Named constants for DMS (Degrees-Minutes-Seconds) symbols.
   const char degreesSymbol = 'o';
@@ -54,6 +56,13 @@ namespace NTUD
   const unsigned int ismaLonIndex = 2;
   const unsigned int ismaLonBearingIndex = 3;
   const unsigned int ismaAltIndex = 4;
+
+  // Field index constants for AZI format: timestamp, alt, lat, latBearing, lon, lonBearing.
+  const unsigned int aziAltIndex = 1;
+  const unsigned int aziLatIndex = 2;
+  const unsigned int aziLatBearingIndex = 3;
+  const unsigned int aziLonIndex = 4;
+  const unsigned int aziLonBearingIndex = 5;
 
   string toUpperCase(string s)
   {
@@ -166,7 +175,7 @@ namespace NTUD
       }
       catch (const invalid_argument& e)
       {
-          throw domain_error(string("Ill-formed ISMA data field: ") + e.what());
+          throw domain_error(string("Ill-formed ISMAHANE data field: ") + e.what());
       }
 
       lat = applyBearing(lat, fields[ismaLatBearingIndex], northBearing, southBearing, formatISMA);
@@ -178,7 +187,34 @@ namespace NTUD
       }
       catch (const invalid_argument& e)
       {
-          throw domain_error(string("Ill-formed ISMA data field: ") + e.what());
+          throw domain_error(string("Ill-formed ISMAHANE data field: ") + e.what());
+      }
+  }
+
+  Waypoint interpretAZI(const vector<string>& fields)
+  {
+      double lat, lon, alt;
+      try
+      {
+          alt = stod(fields[aziAltIndex]);
+          lat = parseDMS(fields[aziLatIndex]);
+          lon = parseDMS(fields[aziLonIndex]);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed AZI data field: ") + e.what());
+      }
+
+      lat = applyBearing(lat, fields[aziLatBearingIndex], northBearing, southBearing, formatAZI);
+      lon = applyBearing(lon, fields[aziLonBearingIndex], eastBearing, westBearing, formatAZI);
+
+      try
+      {
+          return Waypoint(lat, lon, alt);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed AZI data field: ") + e.what());
       }
   }
 
@@ -275,6 +311,7 @@ namespace NTUD
 
       if (format == formatDAVE) return n == daveMinFields;
       if (format == formatISMA) return n == ismaMinFields;
+      if (format == formatAZI) return n == aziMinFields;
 
       throw std::domain_error("Unrecognised NTUD format code: " + format);
   }
@@ -282,7 +319,8 @@ namespace NTUD
   Waypoint interpretLogEntry(NTUD::LogEntry le)
   {
       if (le.format == formatDAVE) return interpretDAVE(le.fields);
-      return interpretISMA(le.fields);
+      if (le.format == formatISMA) return interpretISMA(le.fields);
+      return interpretAZI(le.fields);
   }
 
 }
