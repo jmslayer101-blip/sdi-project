@@ -20,7 +20,7 @@ namespace NTUD
   const char fieldCloseBracket = '>';
   const char fieldSeparator = ',';
   const unsigned int minFormatCodeLength = 2;
-  const unsigned int checksumLength = 3;
+  const unsigned int checksumLength = 2;
 
   // Reserved characters that cannot appear within field data.
   const string reservedFieldChars = {startSymbol, endSymbol, fieldOpenBracket};
@@ -78,6 +78,11 @@ namespace NTUD
   bool isDigit(char c)
   {
       return isdigit(static_cast<unsigned char>(c));
+  }
+
+  bool isHexDigit(char c)
+  {
+      return isxdigit(static_cast<unsigned char>(c));
   }
 
   // Parse a DMS (Degrees-Minutes-Seconds) string like "78o36'45''" into decimal degrees.
@@ -248,7 +253,7 @@ namespace NTUD
       if (s.size() < i + 1 + checksumLength + 1) return false;
       for (unsigned int j = 1; j <= checksumLength; ++j)
       {
-          if (!isDigit(s[i + j])) return false;
+          if (!isHexDigit(s[i + j])) return false;
       }
 
       if (s[i + checksumLength + 1] != endSymbol) return false;
@@ -273,7 +278,7 @@ namespace NTUD
   {
       size_t closeBracket = s.find(fieldCloseBracket);
       string checksumText = s.substr(closeBracket + 1, checksumLength);
-      return stoi(checksumText);
+      return stoi(checksumText, nullptr, 16);
   }
 
   NTUD::LogEntry parseLogEntry(std::string s)
