@@ -14,7 +14,7 @@ namespace NTUD
   using namespace std;
 
   // Named constants for NTUD log entry structure.
-  const char startSymbol = '#';
+  const char startSymbol = '@';
   const char endSymbol = ';';
   const char fieldOpenBracket = '[';
   const char fieldCloseBracket = ']';
