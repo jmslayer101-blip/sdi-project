@@ -8,14 +8,9 @@ add_compile_options(-Wall)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-add_executable(ntud-parser-tests
-    include/earth.h
-    include/geometry.h
-    include/ntud/ntud-logentry.h
-    include/ntud/ntud-parser.h
-    include/types.h
-    include/waypoint.h
+find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 
+add_executable(ntud-parser-tests
     src/earth.cpp
     src/geometry.cpp
     src/ntud/ntud-parser.cpp
@@ -29,12 +24,9 @@ add_executable(ntud-parser-tests
 )
 
 target_include_directories(ntud-parser-tests PRIVATE
-${CMAKE_SOURCE_DIR}/include
-${CMAKE_SOURCE_DIR}/include/ntud/
-"C:/local/boost_1_90_0"
+    ${CMAKE_SOURCE_DIR}/include
 )
 
 target_link_libraries(ntud-parser-tests PRIVATE
-    debug "C:/local/boost_1_90_0/lib64-msvc-14.3/libboost_unit_test_framework-vc143-mt-gd-x64-1_90.lib"
-    optimized "C:/local/boost_1_90_0/lib64-msvc-14.3/libboost_unit_test_framework-vc143-mt-x64-1_90.lib"
+    Boost::unit_test_framework
 )
