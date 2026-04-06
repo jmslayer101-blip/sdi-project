@@ -150,4 +150,15 @@ BOOST_AUTO_TEST_CASE( InvalidField )
     BOOST_CHECK_EQUAL( actualWaypoints.size() , theExpectedSize );
 }
 
+BOOST_AUTO_TEST_CASE( WhitespaceOptional )
+{
+    std::stringstream theLog;
+    theLog << std::endl << "    " << validLogEntryA << " \t " << std::endl << validLogEntryB << validLogEntryB << std::endl;
+    const unsigned int theExpectedSize = 3;
+
+    std::vector<Waypoint> actualWaypoints = parseAndInterpretLog(theLog);
+
+    BOOST_CHECK_EQUAL( actualWaypoints.size() , theExpectedSize );
+}
+
 BOOST_AUTO_TEST_SUITE_END()

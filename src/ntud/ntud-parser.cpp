@@ -2,6 +2,7 @@
 #include <cmath>
 #include <algorithm>
 #include <cctype>
+#include <iterator>
 
 #include "geometry.h"
 #include "ntud/ntud-parser.h"
@@ -331,13 +332,26 @@ namespace NTUD
   vector<Waypoint> parseAndInterpretLog(istream& logStream)
   {
       vector<Waypoint> waypoints;
-      string line;
-      while (getline(logStream, line))
-      {
-          if (!hasValidStructure(line)) continue;
-          if (actualChecksum(line) != expectedChecksum(line)) continue;
+      string content((istreambuf_iterator<char>(logStream)), istreambuf_iterator<char>());
 
-          LogEntry le = parseLogEntry(line);
+      size_t pos = 0;
+      while (pos < content.size())
+      {
+          // Find the next start symbol.
+          size_t start = content.find(startSymbol, pos);
+          if (start == string::npos) break;
+
+          // Find the next end symbol after the start.
+          size_t end = content.find(endSymbol, start);
+          if (end == string::npos) break;
+
+          string entry = content.substr(start, end - start + 1);
+          pos = end + 1;
+
+          if (!hasValidStructure(entry)) continue;
+          if (actualChecksum(entry) != expectedChecksum(entry)) continue;
+
+          LogEntry le = parseLogEntry(entry);
 
           try
           {
