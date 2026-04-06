@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "C:/Users/N1180883/OneDrive/Desktop/Degree/Computer Science/Soft Eng/GPS2026/bin/ntud-parser-tests.exe"
+			"path" : "C:/Soft Eng/GPS2026/bin/ntud-parser-tests.exe"
 		},
 		{
-			"path" : "C:/Users/N1180883/OneDrive/Desktop/Degree/Computer Science/Soft Eng/GPS2026/bin/ntud-parser-tests.pdb"
+			"path" : "C:/Soft Eng/GPS2026/bin/ntud-parser-tests.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -53,6 +53,11 @@
 			}
 		]
 	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	},
 	"compileGroups" : 
 	[
 		{
@@ -70,11 +75,11 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/N1180883/OneDrive/Desktop/Degree/Computer Science/Soft Eng/GPS2026/include"
+					"path" : "C:/Soft Eng/GPS2026/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/N1180883/OneDrive/Desktop/Degree/Computer Science/Soft Eng/GPS2026/include/ntud"
+					"path" : "C:/Soft Eng/GPS2026/include/ntud"
 				},
 				{
 					"backtrace" : 4,
@@ -114,12 +119,16 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console",
+				"fragment" : "/machine:x64 /debug /INCREMENTAL",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "/subsystem:console",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\local\\boost_1_90_0\\lib64-msvc-14.3\\libboost_unit_test_framework-vc143-mt-x64-1_90.lib",
+				"fragment" : "C:\\local\\boost_1_90_0\\lib64-msvc-14.3\\libboost_unit_test_framework-vc143-mt-gd-x64-1_90.lib",
 				"role" : "libraries"
 			},
 			{
@@ -129,6 +138,13 @@
 		],
 		"language" : "CXX"
 	},
+	"linkLibraries" : 
+	[
+		{
+			"backtrace" : 2,
+			"fragment" : "C:/local/boost_1_90_0/lib64-msvc-14.3/libboost_unit_test_framework-vc143-mt-gd-x64-1_90.lib"
+		}
+	],
 	"name" : "ntud-parser-tests",
 	"nameOnDisk" : "ntud-parser-tests.exe",
 	"paths" : 

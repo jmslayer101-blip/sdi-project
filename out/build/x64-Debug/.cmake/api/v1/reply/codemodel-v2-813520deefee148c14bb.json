@@ -2,11 +2,12 @@
 	"configurations" : 
 	[
 		{
+			"abstractTargets" : [],
 			"directories" : 
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"jsonFile" : "directory-.-Debug-f6f22219c74102c3da70.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.20"
@@ -39,7 +40,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ntud-parser-tests::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ntud-parser-tests-Debug-5611dc50895d4c6a2aad.json",
+					"jsonFile" : "target-ntud-parser-tests-Debug-5d1c3315fdf9468fc0e1.json",
 					"name" : "ntud-parser-tests",
 					"projectIndex" : 0
 				}
@@ -49,12 +50,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/N1180883/OneDrive/Desktop/Degree/Computer Science/Soft Eng/GPS2026/out/build/x64-Debug",
-		"source" : "C:/Users/N1180883/OneDrive/Desktop/Degree/Computer Science/Soft Eng/GPS2026"
+		"build" : "C:/Soft Eng/GPS2026/out/build/x64-Debug",
+		"source" : "C:/Soft Eng/GPS2026"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 8
+		"minor" : 9
 	}
 }

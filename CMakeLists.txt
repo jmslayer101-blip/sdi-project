@@ -35,5 +35,6 @@ ${CMAKE_SOURCE_DIR}/include/ntud/
 )
 
 target_link_libraries(ntud-parser-tests PRIVATE
-"C:/local/boost_1_90_0/lib64-msvc-14.3/libboost_unit_test_framework-vc143-mt-x64-1_90.lib"
+    debug "C:/local/boost_1_90_0/lib64-msvc-14.3/libboost_unit_test_framework-vc143-mt-gd-x64-1_90.lib"
+    optimized "C:/local/boost_1_90_0/lib64-msvc-14.3/libboost_unit_test_framework-vc143-mt-x64-1_90.lib"
 )
