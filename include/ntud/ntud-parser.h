@@ -49,7 +49,8 @@ namespace GPS::NTUD
   // Parses and interprets the GPS location data from a sequence of raw text NTUD log entries.
   // Any log entry that has an invalid structure or mismatched checksum is skipped.
   // Log entries with invalid content in the data fields are also skipped.
-  std::vector<GPS::Waypoint> parseAndInterpretLog(std::istream&);
+  // A message is written to the output stream for each skipped entry.
+  std::vector<GPS::Waypoint> parseAndInterpretLog(std::istream&, std::ostream&);
 }
 
 #endif

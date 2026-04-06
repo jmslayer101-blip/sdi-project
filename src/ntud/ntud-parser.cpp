@@ -329,7 +329,7 @@ namespace NTUD
       return interpretAZI(le.fields);
   }
 
-  vector<Waypoint> parseAndInterpretLog(istream& logStream)
+  vector<Waypoint> parseAndInterpretLog(istream& logStream, ostream& messageStream)
   {
       vector<Waypoint> waypoints;
       string content((istreambuf_iterator<char>(logStream)), istreambuf_iterator<char>());
@@ -348,17 +348,30 @@ namespace NTUD
           string entry = content.substr(start, end - start + 1);
           pos = end + 1;
 
-          if (!hasValidStructure(entry)) continue;
-          if (actualChecksum(entry) != expectedChecksum(entry)) continue;
+          if (!hasValidStructure(entry))
+          {
+              messageStream << "Log entry has invalid structure: " << entry << endl;
+              continue;
+          }
+          if (actualChecksum(entry) != expectedChecksum(entry))
+          {
+              messageStream << "Log entry has invalid checksum: " << entry << endl;
+              continue;
+          }
 
           LogEntry le = parseLogEntry(entry);
 
           try
           {
-              if (!hasCorrectNumberOfFields(le)) continue;
+              if (!hasCorrectNumberOfFields(le))
+              {
+                  messageStream << "Log entry has incorrect number of fields: " << entry << endl;
+                  continue;
+              }
           }
           catch (const domain_error&)
           {
+              messageStream << "Log entry has incorrect number of fields: " << entry << endl;
               continue;
           }
 
@@ -368,6 +381,7 @@ namespace NTUD
           }
           catch (const domain_error&)
           {
+              messageStream << "Invalid data in log entry: " << entry << endl;
               continue;
           }
       }
