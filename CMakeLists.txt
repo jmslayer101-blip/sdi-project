@@ -17,6 +17,8 @@ add_executable(ntud-parser-tests
     src/waypoint.cpp
 
     tests/ntud/BoostUTF-main.cpp
+    tests/ntud/ntud-parser-actualChecksum-tests.cpp
+    tests/ntud/ntud-parser-expectedChecksum-tests.cpp
     tests/ntud/ntud-parser-hasSufficientFields-tests.cpp
     tests/ntud/ntud-parser-hasValidStructure-tests.cpp
     tests/ntud/ntud-parser-interpretLogEntry-tests.cpp
