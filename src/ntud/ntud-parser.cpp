@@ -19,15 +19,15 @@ namespace NTUD
   const char fieldOpenBracket = '<';
   const char fieldCloseBracket = '>';
   const char fieldSeparator = ',';
-  const unsigned int formatCodeLength = 4;
+  const unsigned int minFormatCodeLength = 2;
   const unsigned int checksumLength = 3;
 
   // Reserved characters that cannot appear within field data.
   const string reservedFieldChars = {startSymbol, endSymbol, fieldOpenBracket};
 
   // Named constants for NTUD format codes.
-  const string formatDAVE = "DAVE";
-  const string formatISMA = "ISMA";
+  const string formatDAVE = "DAVID";
+  const string formatISMA = "ISMAHANE";
 
   // Field count requirements for each format.
   const unsigned int daveMinFields = 4;
@@ -184,20 +184,24 @@ namespace NTUD
 
   bool hasValidStructure(string s)
   {
-      const unsigned int minLength = 1 + formatCodeLength + 1 + 1 + checksumLength + 1;
+      // Minimum length: startSymbol + 2 format chars + open + close + checksumLength + endSymbol
+      const unsigned int minLength = 1 + minFormatCodeLength + 1 + 1 + checksumLength + 1;
       if (s.size() < minLength) return false;
 
       if (s[0] != startSymbol) return false;
 
-      for (unsigned int i = 1; i <= formatCodeLength; ++i)
+      // Scan format code: 2+ uppercase alpha chars.
+      unsigned int formatEnd = 1;
+      while (formatEnd < s.size() && isUpperAlpha(s[formatEnd]))
       {
-          if (!isUpperAlpha(s[i])) return false;
+          ++formatEnd;
       }
+      unsigned int formatLen = formatEnd - 1;
+      if (formatLen < minFormatCodeLength) return false;
 
-      unsigned int fieldStart = 1 + formatCodeLength;
-      if (s[fieldStart] != fieldOpenBracket) return false;
+      if (formatEnd >= s.size() || s[formatEnd] != fieldOpenBracket) return false;
 
-      unsigned int i = fieldStart + 1;
+      unsigned int i = formatEnd + 1;
       for (; i < s.size(); ++i)
       {
           if (s[i] == fieldCloseBracket) break;
@@ -240,9 +244,9 @@ namespace NTUD
   {
       NTUD::LogEntry le;
 
-      le.format = s.substr(1, formatCodeLength);
-
+      // Find the open bracket to determine format code end.
       size_t openBracket = s.find(fieldOpenBracket);
+      le.format = s.substr(1, openBracket - 1);
       size_t closeBracket = s.find(fieldCloseBracket);
       string fieldData = s.substr(openBracket + 1, closeBracket - openBracket - 1);
 
