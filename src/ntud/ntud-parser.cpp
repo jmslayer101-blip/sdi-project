@@ -55,6 +55,31 @@ namespace NTUD
   NTUD::LogEntry parseLogEntry(std::string s)
   {
       NTUD::LogEntry le;
+
+      // Extract the 4-character format code (after the '#' start symbol).
+      le.format = s.substr(1, 4);
+
+      // Extract the field data between '[' and ']'.
+      size_t openBracket = s.find('[');
+      size_t closeBracket = s.find(']');
+      string fieldData = s.substr(openBracket + 1, closeBracket - openBracket - 1);
+
+      // Split field data by comma separators.
+      string currentField;
+      for (char c : fieldData)
+      {
+          if (c == ',')
+          {
+              le.fields.push_back(currentField);
+              currentField.clear();
+          }
+          else
+          {
+              currentField += c;
+          }
+      }
+      le.fields.push_back(currentField);
+
       return le;
   }
 
