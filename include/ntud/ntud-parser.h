@@ -22,6 +22,10 @@ namespace GPS::NTUD
   unsigned int actualChecksum(std::string);
 
 
+  // Extracts and returns the expected checksum value stored in the log entry.
+  // Pre-condition: the argument string conforms to the structure of an NTUD log entry.
+  unsigned int expectedChecksum(std::string);
+
 
   // Parses the raw text of a NTUD log entry and stores the data contents in a structured form in an NTUD::LogEntry.
   // Pre-condition: the argument string conforms to the structure of an NTUD log entry.

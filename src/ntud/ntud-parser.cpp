@@ -17,15 +17,16 @@ namespace NTUD
       unsigned int i;
       if (s.empty()) return false;
       if (s.size() < 5) return false;
+      if (s[0] != '#') return false;
 
       c = s[1];
-      if (((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z'))) return false;
+      if ((c < 'A') || (c > 'Z')) return false;
       c = s[2];
-      if (((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z'))) return false;
+      if ((c < 'A') || (c > 'Z')) return false;
       c = s[3];
-      if (((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z'))) return false;
+      if ((c < 'A') || (c > 'Z')) return false;
       c = s[4];
-      if (((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z'))) return false;
+      if ((c < 'A') || (c > 'Z')) return false;
       if (s.size() < 6) return false;
       if (s[5] != '[') return false;
 
@@ -50,6 +51,25 @@ namespace NTUD
       if (s.size() != i+5) return false;
 
       return true;
+  }
+
+  unsigned int actualChecksum(string s)
+  {
+      size_t openBracket = s.find('[');
+      size_t closeBracket = s.find(']');
+      unsigned int checksum = 0;
+      for (size_t i = openBracket + 1; i < closeBracket; ++i)
+      {
+          checksum ^= static_cast<unsigned int>(s[i]);
+      }
+      return checksum;
+  }
+
+  unsigned int expectedChecksum(string s)
+  {
+      size_t closeBracket = s.find(']');
+      string checksumText = s.substr(closeBracket + 1, 3);
+      return stoi(checksumText);
   }
 
   NTUD::LogEntry parseLogEntry(std::string s)
@@ -88,14 +108,8 @@ namespace NTUD
       string s = le.format;
       unsigned int n = le.fields.size();
 
-      if (s.size() != 4)
-      {
-          return false;
-      }
-
       // Convert to upper case.
-      // *** A2 FIX: removed stray semicolon and added ++i ***
-      for (unsigned int i = 0; i < 4; ++i)
+      for (unsigned int i = 0; i < s.size(); ++i)
       {
           if (s[i] >= 'a' && s[i] <= 'z')
           {
@@ -103,22 +117,21 @@ namespace NTUD
           }
       }
 
-      if (s == "NEIL" && n > 2)
+      if (s == "NEIL")
       {
-          return true;
+          return n > 2;
       }
-      else if (s == "DAVE" && n > 3)
+      else if (s == "DAVE")
       {
-          return true;
+          return n > 3;
       }
-      else if (s == "ISMA" && n > 4)
+      else if (s == "ISMA")
       {
-          return true;
+          return n > 4;
       }
       else
       {
-          // *** A2 FIX: corrected invalid token 'returnfalse' ***
-          return false;
+          throw std::domain_error("Unrecognised NTUD format code: " + s);
       }
   }
 
