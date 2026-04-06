@@ -26,12 +26,10 @@ namespace NTUD
   const string reservedFieldChars = {startSymbol, endSymbol, fieldOpenBracket};
 
   // Named constants for NTUD format codes.
-  const string formatNEIL = "NEIL";
   const string formatDAVE = "DAVE";
   const string formatISMA = "ISMA";
 
   // Field count requirements for each format.
-  const unsigned int neilMinFields = 3;
   const unsigned int daveMinFields = 4;
   const unsigned int ismaMinFields = 5;
 
@@ -44,11 +42,6 @@ namespace NTUD
   const string southBearing = "S";
   const string eastBearing = "E";
   const string westBearing = "W";
-
-  // Field index constants for NEIL format: lat, lon, alt.
-  const unsigned int neilLatIndex = 0;
-  const unsigned int neilLonIndex = 1;
-  const unsigned int neilAltIndex = 2;
 
   // Field index constants for DAVE format: timestamp, alt, lat, lon.
   const unsigned int daveAltIndex = 1;
@@ -126,21 +119,6 @@ namespace NTUD
       }
 
       return result;
-  }
-
-  Waypoint interpretNEIL(const vector<string>& fields)
-  {
-      try
-      {
-          double lat = stod(fields[neilLatIndex]);
-          double lon = stod(fields[neilLonIndex]);
-          double alt = stod(fields[neilAltIndex]);
-          return Waypoint(lat, lon, alt);
-      }
-      catch (const invalid_argument& e)
-      {
-          throw domain_error(string("Ill-formed NEIL data field: ") + e.what());
-      }
   }
 
   Waypoint interpretDAVE(const vector<string>& fields)
@@ -291,7 +269,6 @@ namespace NTUD
       string format = toUpperCase(le.format);
       unsigned int n = le.fields.size();
 
-      if (format == formatNEIL) return n >= neilMinFields;
       if (format == formatDAVE) return n >= daveMinFields;
       if (format == formatISMA) return n >= ismaMinFields;
 
@@ -300,7 +277,6 @@ namespace NTUD
 
   Waypoint interpretLogEntry(NTUD::LogEntry le)
   {
-      if (le.format == formatNEIL) return interpretNEIL(le.fields);
       if (le.format == formatDAVE) return interpretDAVE(le.fields);
       return interpretISMA(le.fields);
   }

@@ -16,20 +16,6 @@ BOOST_AUTO_TEST_SUITE( InterpretLogEntryTests )
 const double percentageAccuracy = 0.0001;
 const double absoluteAccuracy = 0.0001;
 
-BOOST_AUTO_TEST_CASE( NEIL )
-{
-    const LogEntry theLogEntry = { "NEIL", {"+45.67","-23.24","231.56"} };
-    const degrees expectedLatitude = 45.67;
-    const degrees expectedLongitude = -23.24;
-    const degrees expectedAltitude = 231.56;
-
-    Waypoint actualWaypoint = interpretLogEntry(theLogEntry);
-
-    BOOST_CHECK_CLOSE( actualWaypoint.latitude() , expectedLatitude , percentageAccuracy );
-    BOOST_CHECK_CLOSE( actualWaypoint.longitude() , expectedLongitude , percentageAccuracy );
-    BOOST_CHECK_CLOSE( actualWaypoint.altitude() , expectedAltitude , percentageAccuracy );
-}
-
 BOOST_AUTO_TEST_CASE( DAVE )
 {
     const LogEntry theLogEntry = { "DAVE", {"2000-01-11T01:10:05Z","56.89","-17.5","51.4"} };
