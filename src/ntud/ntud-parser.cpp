@@ -45,8 +45,9 @@ namespace NTUD
   const unsigned int vishalMinFields = 5;
 
   // Named constants for DMS (Degrees-Minutes-Seconds) symbols.
-  const char degreesSymbol = 'o';
-  const char minutesSymbol = '\'';
+  const char degreesSymbol = 'd';
+  const char minutesSymbol = 'm';
+  const char secondsSymbol = 's';
 
   // Named constants for bearing indicators.
   const string northBearing = "N";
@@ -126,7 +127,7 @@ namespace NTUD
   degrees parseDMS(const string& dmsText)
   {
       string degText, minText, secText;
-      enum class ParseState { Degrees, Minutes, Seconds, SecondsTick, Done };
+      enum class ParseState { Degrees, Minutes, Seconds, Done };
       ParseState state = ParseState::Degrees;
 
       for (char c : dmsText)
@@ -142,12 +143,8 @@ namespace NTUD
                   else minText += c;
                   break;
               case ParseState::Seconds:
-                  if (c == minutesSymbol) state = ParseState::SecondsTick;
+                  if (c == secondsSymbol) state = ParseState::Done;
                   else secText += c;
-                  break;
-              case ParseState::SecondsTick:
-                  if (c == minutesSymbol) state = ParseState::Done;
-                  else throw domain_error("malformed seconds symbol in data field: " + dmsText);
                   break;
               case ParseState::Done:
                   throw domain_error("extra characters after seconds symbol in data field: " + dmsText);
