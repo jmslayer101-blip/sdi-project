@@ -264,13 +264,13 @@ namespace NTUD
       return le;
   }
 
-  bool hasSufficientFields(LogEntry le)
+  bool hasCorrectNumberOfFields(LogEntry le)
   {
       string format = toUpperCase(le.format);
       unsigned int n = le.fields.size();
 
-      if (format == formatDAVE) return n >= daveMinFields;
-      if (format == formatISMA) return n >= ismaMinFields;
+      if (format == formatDAVE) return n == daveMinFields;
+      if (format == formatISMA) return n == ismaMinFields;
 
       throw std::domain_error("Unrecognised NTUD format code: " + format);
   }
