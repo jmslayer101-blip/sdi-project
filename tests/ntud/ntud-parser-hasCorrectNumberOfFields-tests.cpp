@@ -31,9 +31,30 @@ BOOST_AUTO_TEST_CASE( SufficientFieldsAZI )
     BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
 }
 
+BOOST_AUTO_TEST_CASE( SufficientFieldsAHMAD )
+{
+    const LogEntry theLogEntry = { "AHMAD", {"23.62", "78o36'45''","N","23o42'56''","W"} };
+
+    BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
+}
+
 BOOST_AUTO_TEST_CASE( SufficientFieldsROB )
 {
     const LogEntry theLogEntry = { "ROB", {"78o36.45","N","23o42.56","E","2001-05-15T02:08:32Z","256"} };
+
+    BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
+}
+
+BOOST_AUTO_TEST_CASE( SufficientFieldsJO )
+{
+    const LogEntry theLogEntry = { "JO", {"2001-05-15T02:08:32Z","78o36.45","N","23o42.56","E","256","extra"} };
+
+    BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
+}
+
+BOOST_AUTO_TEST_CASE( SufficientFieldsVISHAL )
+{
+    const LogEntry theLogEntry = { "VISHAL", {"23.62","78o36'45''","W","23o42'56''","N"} };
 
     BOOST_CHECK( hasCorrectNumberOfFields(theLogEntry) );
 }

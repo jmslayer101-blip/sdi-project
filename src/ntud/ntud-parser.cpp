@@ -31,12 +31,18 @@ namespace NTUD
   const string formatISMA = "ISMAHANE";
   const string formatAZI = "AZI";
   const string formatROB = "ROB";
+  const string formatAHMAD = "AHMAD";
+  const string formatJO = "JO";
+  const string formatVISHAL = "VISHAL";
 
   // Field count requirements for each format.
   const unsigned int daveMinFields = 4;
   const unsigned int ismaMinFields = 5;
   const unsigned int aziMinFields = 6;
   const unsigned int robMinFields = 6;
+  const unsigned int ahmadMinFields = 5;
+  const unsigned int joMinFields = 7;
+  const unsigned int vishalMinFields = 5;
 
   // Named constants for DMS (Degrees-Minutes-Seconds) symbols.
   const char degreesSymbol = 'o';
@@ -73,6 +79,27 @@ namespace NTUD
   const unsigned int robLonIndex = 2;
   const unsigned int robLonBearingIndex = 3;
   const unsigned int robAltIndex = 5;
+
+  // Field index constants for AHMAD format: alt, lat(DMS), latBearing, lon(DMS), lonBearing.
+  const unsigned int ahmadAltIndex = 0;
+  const unsigned int ahmadLatIndex = 1;
+  const unsigned int ahmadLatBearingIndex = 2;
+  const unsigned int ahmadLonIndex = 3;
+  const unsigned int ahmadLonBearingIndex = 4;
+
+  // Field index constants for JO format: timestamp, lat(DDM), latBearing, lon(DDM), lonBearing, alt, extra.
+  const unsigned int joLatIndex = 1;
+  const unsigned int joLatBearingIndex = 2;
+  const unsigned int joLonIndex = 3;
+  const unsigned int joLonBearingIndex = 4;
+  const unsigned int joAltIndex = 5;
+
+  // Field index constants for VISHAL format: alt, lon(DDM), lonBearing, lat(DDM), latBearing.
+  const unsigned int vishalAltIndex = 0;
+  const unsigned int vishalLonIndex = 1;
+  const unsigned int vishalLonBearingIndex = 2;
+  const unsigned int vishalLatIndex = 3;
+  const unsigned int vishalLatBearingIndex = 4;
 
   string toUpperCase(string s)
   {
@@ -263,6 +290,33 @@ namespace NTUD
       }
   }
 
+  Waypoint interpretAHMAD(const vector<string>& fields)
+  {
+      double lat, lon, alt;
+      try
+      {
+          alt = stod(fields[ahmadAltIndex]);
+          lat = parseDMS(fields[ahmadLatIndex]);
+          lon = parseDMS(fields[ahmadLonIndex]);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed AHMAD data field: ") + e.what());
+      }
+
+      lat = applyBearing(lat, fields[ahmadLatBearingIndex], northBearing, southBearing, formatAHMAD);
+      lon = applyBearing(lon, fields[ahmadLonBearingIndex], eastBearing, westBearing, formatAHMAD);
+
+      try
+      {
+          return Waypoint(lat, lon, alt);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed AHMAD data field: ") + e.what());
+      }
+  }
+
   Waypoint interpretROB(const vector<string>& fields)
   {
       double lat, lon, alt;
@@ -287,6 +341,60 @@ namespace NTUD
       catch (const invalid_argument& e)
       {
           throw domain_error(string("Ill-formed ROB data field: ") + e.what());
+      }
+  }
+
+  Waypoint interpretJO(const vector<string>& fields)
+  {
+      double lat, lon, alt;
+      try
+      {
+          lat = parseDDM(fields[joLatIndex]);
+          lon = parseDDM(fields[joLonIndex]);
+          alt = stod(fields[joAltIndex]);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed JO data field: ") + e.what());
+      }
+
+      lat = applyBearing(lat, fields[joLatBearingIndex], northBearing, southBearing, formatJO);
+      lon = applyBearing(lon, fields[joLonBearingIndex], eastBearing, westBearing, formatJO);
+
+      try
+      {
+          return Waypoint(lat, lon, alt);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed JO data field: ") + e.what());
+      }
+  }
+
+  Waypoint interpretVISHAL(const vector<string>& fields)
+  {
+      double lat, lon, alt;
+      try
+      {
+          alt = stod(fields[vishalAltIndex]);
+          lon = parseDDM(fields[vishalLonIndex]);
+          lat = parseDDM(fields[vishalLatIndex]);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed VISHAL data field: ") + e.what());
+      }
+
+      lat = applyBearing(lat, fields[vishalLatBearingIndex], northBearing, southBearing, formatVISHAL);
+      lon = applyBearing(lon, fields[vishalLonBearingIndex], eastBearing, westBearing, formatVISHAL);
+
+      try
+      {
+          return Waypoint(lat, lon, alt);
+      }
+      catch (const invalid_argument& e)
+      {
+          throw domain_error(string("Ill-formed VISHAL data field: ") + e.what());
       }
   }
 
@@ -385,6 +493,9 @@ namespace NTUD
       if (format == formatISMA) return n == ismaMinFields;
       if (format == formatAZI) return n == aziMinFields;
       if (format == formatROB) return n == robMinFields;
+      if (format == formatAHMAD) return n == ahmadMinFields;
+      if (format == formatJO) return n == joMinFields;
+      if (format == formatVISHAL) return n == vishalMinFields;
 
       throw std::domain_error("Unrecognised NTUD format code: " + format);
   }
@@ -394,7 +505,10 @@ namespace NTUD
       if (le.format == formatDAVE) return interpretDAVE(le.fields);
       if (le.format == formatISMA) return interpretISMA(le.fields);
       if (le.format == formatAZI) return interpretAZI(le.fields);
-      return interpretROB(le.fields);
+      if (le.format == formatROB) return interpretROB(le.fields);
+      if (le.format == formatJO) return interpretJO(le.fields);
+      if (le.format == formatVISHAL) return interpretVISHAL(le.fields);
+      return interpretAHMAD(le.fields);
   }
 
   vector<Waypoint> parseAndInterpretLog(istream& logStream, ostream& messageStream)
